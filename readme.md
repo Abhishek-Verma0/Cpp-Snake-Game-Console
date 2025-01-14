@@ -25,7 +25,7 @@ This is a traditional Snake game where players control a snake to eat fruits and
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/snake-game.git
+git clone https://github.com/Abhishek-Verma0/Cpp-Snake-Game-Console.git
 ```
 
 2. Navigate to the project directory:
