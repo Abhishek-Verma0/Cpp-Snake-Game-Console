@@ -135,3 +135,23 @@ SOFTWARE.
 4. Push to branch (`git push origin feature/NewFeature`)
 5. Open a Pull Request
 
+
+
+## ANSI CODES
+ANSI escape codes are supported on many modern terminal emulators (including Linux and macOS). They allow you to change the text color and background using special character sequences.
+
+    \033[31;40m
+1.  `\033` is the escape character (ESC in ASCII).
+2. `31` represents red text color.
+3. `40` represents black background color.
+4. `0m` resets all attributes to default.
+
+- \033[48;5;0m = Black background
+- \033[48;5;1m = Red background
+\033[48;5;2m = Green background
+- \033[48;5;3m = Yellow background
+- \033[48;5;4m = Blue background
+- \033[48;5;5m = Magenta background
+- \033[48;5;6m = Cyan background
+- \033[48;5;7m = White background
+- \033[48;5;<number>m = 256-color background (where <number> can be between 0 and 255)
