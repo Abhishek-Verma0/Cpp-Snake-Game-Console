@@ -203,8 +203,8 @@ int main() {
 
 
         // Game over message
-
-    cout << "\n\033[48;5;1mGame Over! Final Score: " << score <<"\033[0m"<< endl;
+    // Set the background color to red for the "Game Over" message
+    cout << "\n\033[48;5;1mGame Over! Final Score: " << score <<"\033[0m"<< endl; // The reset sequence (\033[0m) ensures that the red background won't affect subsequent output
 
     system("pause");
     return 0;
