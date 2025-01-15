@@ -202,10 +202,10 @@ int main() {
     }
 
 
-        // Game over message 
-   
-    cout << "\nGame Over! Final Score: " << score << endl;
-  
+        // Game over message
+
+    cout << "\n\033[48;5;1mGame Over! Final Score: " << score <<"\033[0m"<< endl;
+
     system("pause");
     return 0;
 }
