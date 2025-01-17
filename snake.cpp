@@ -5,6 +5,72 @@ using namespace std;
 
 // Flag to indicate whether the game should end
 bool gameEnd = false;
+bool quit = false;
+
+/********Starting Game Menu**********/
+string menuOpt[] = {"Start Game", "View Score", "Exit Game"};//options for menu
+const int menuSize = 3; // size of option menu array
+int optSelected = 0; // tracks the which option is selected
+
+// Function to display the main menu of the Snake Game
+void menu() {
+    // Clears the console before printing the menu
+    // This ensures the menu appears fresh without overlapping previous prints
+    system("cls");
+    // Print the menu title with purple color (ANSI escape code \033[95m)
+    cout << "\033[95m=== Snake Game Menu ===\033[0m\n\n";
+
+    // Loop through the menu options to display them one by one
+    for (int i = 0; i < menuSize; i++) {
+        // Check if the current option is the one selected by the user
+        if (i == optSelected) {
+            // Highlight the selected menu option with cyan color (\033[96m)
+            // Add ">>" before and "<<" after the option for visual indication
+            cout << ">>\033[96m " << menuOpt[i] << " \033[0m<<\n";
+        } else {
+            // Display non-selected options with regular formatting (no color change)
+            cout << "   " << menuOpt[i] << "\n";
+        }
+    }
+}
+
+// Function to handle the logic for navigating and selecting options in the menu
+int menuLogic() {
+    // Infinite loop to keep the menu active until the user makes a valid selection
+    while (true) {
+        // Calls the menu function to display the menu with the current state
+        menu();
+
+        // Captures a key press from the user
+        int ch = _getch();
+
+        // Checks if the first character is the prefix for arrow keys (224)
+        if (ch == 224) {
+            // Captures the second part of the arrow key input
+            ch = _getch();
+            switch (ch) {
+                case 72: // Up arrow key pressed
+                    // Move the selection upwards in the menu
+                    // `(optSelected - 1 + menuSize) % menuSize` ensures wrap-around behavior
+                    optSelected = (optSelected - 1 + menuSize) % menuSize;
+                    break;
+
+                case 80: // Down arrow key pressed
+                    // Move the selection downwards in the menu
+                    // `(optSelected + 1) % menuSize` ensures wrap-around behavior
+                    optSelected = (optSelected + 1) % menuSize;
+                    break;
+            }
+        }
+        // Checks if the user pressed the Enter key (ASCII value 13)
+        else if (ch == 13) {
+            // Returns the currently selected menu option index
+            return optSelected;
+        }
+    }
+}
+
+
 
 // Arrays to store the snake's tail coordinates
 int tailX[100], tailY[100]; 
@@ -30,11 +96,13 @@ Dirxn drxn; // Current direction of the snake
 // Initialize default game settings
 void Default() {
     gameEnd = false; // Game is not over initially
+    quit = false;    // User not quitted game initially
     drxn = Stop; // Snake is stationary
     x = width / 2; // Snake starts at the center of the game board
     y = heigth / 2;
     fruitX = rand() % width; // Random x-coordinate for fruit
     fruitY = rand() % heigth; // Random y-coordinate for fruit
+    tail_Len = 0; // initally reset the tail length to 0
     score = 0; // Initial score
 }
 
@@ -49,7 +117,7 @@ void Draw() {
 
     // Draw the top border
     for (int i = 0; i < width + 2; i++) {
-        cout << "#";
+        cout << "\033[93m#\033[0m";
     }
     cout << endl;
 
@@ -57,20 +125,20 @@ void Draw() {
     for (int i = 0; i < heigth; i++) {
         for (int j = 0; j < width; j++) {
             if (j == 0) {
-                cout << "#"; // Left border
+                cout << "\033[93m#\033[0m"; // Left border
             }
 
             if (i == y && j == x) {
-                cout << "O"; // Snake's head
+                cout << "\033[94mO\033[0m"; // Snake's head
             } else if (i == fruitY && j == fruitX) {
-                cout << "F"; // Fruit
+                cout << "\033[92mo\033[0m"; // Fruit
             } else {
                 bool tail_print = false; // Flag to check if part of the tail is here
 
                 for (int k = 0; k < tail_Len; k++) {
                     if (tailX[k] == j && tailY[k] == i) {
                         tail_print = true;
-                        cout << "o"; // Snake's tail
+                        cout << "\033[95mo\033[0m"; // Snake's tail
                         break;
                     }
                 }
@@ -81,7 +149,7 @@ void Draw() {
             }
 
             if (j == width - 1) {
-                cout << "#"; // Right border
+                cout << "\033[93m#\033[0m"; // Right border
             }
         }
         cout << endl;
@@ -89,12 +157,14 @@ void Draw() {
 
     // Draw the bottom border
     for (int i = 0; i < width + 2; i++) {
-        cout << "#";
+        cout << "\033[93m#\033[0m";
     }
     cout << endl;
 
     // Display the score
-    cout << "Score: " << score << endl;
+    cout << "\033[96mScore: " << score<<"\033[0m" << endl;
+    //Which button to quit game deliberately
+    cout << "\033[91mPress 'q' to quit game...\033[0m" << endl;
 }
 
 // Handle user input for snake's movement
@@ -114,7 +184,8 @@ void Input() {
         case 's': // Move down
             drxn = Down;
             break;
-        case 'b': // Quit the game
+        case 'q': // Quit the game when user want to do so
+            quit = true; // 
             gameEnd = true;
             break;
         default:
@@ -192,20 +263,50 @@ void Logic() {
 // Main game loop
 int main() {
 
-    Default(); // Initialize game settings
-    while (!gameEnd) { // Continue until the game ends
-        Draw(); // Render the game board
-        Input(); // Process user input
-        Logic(); // Update game logic
-        int delay = max(10, 50 - tail_Len); // Adjust speed based on snake length
-        Sleep(delay); // Add delay for smooth gameplay
+while(true){
+        int choice= menuLogic();
+        if(choice==0){
+            COORD cursorPosition = {0, 0}; // {0, 0} represents the top-left corner of the console
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cursorPosition);
+
+
+            Default(); // Initialize game settings
+            while (!gameEnd)
+            {                                       // Continue until the game ends
+                Draw();                             // Render the game board
+
+                Input();                            // Process user input
+                Logic();                            // Update game logic
+                int delay = max(10, 50 - tail_Len); // Adjust speed based on snake length
+                Sleep(delay);                       // Add delay for smooth gameplay
+                // Game over message
+                // Set the background color to red for the "Game Over" message
     }
 
+    // checks if user is quitting game deliberately
+    if(quit){
+        cout << "\033[91mQuitting Game....!\033[0m" << endl;
 
-        // Game over message
-    // Set the background color to red for the "Game Over" message
-    cout << "\n\033[48;5;1mGame Over! Final Score: " << score <<"\033[0m"<< endl; // The reset sequence (\033[0m) ensures that the red background won't affect subsequent output
+    }
+    else{
 
+    cout << "\n\033[48;5;1mGame Over! Final Score: " << score<<" " << "\033[0m"<<endl; // The reset sequence (\033[0m) ensures that the red background won't affect subsequent output   
+    }
+     
+    Sleep(1000);
     system("pause");
+        }
+        else if(choice==1){
+
+
+            cout << "\033[92mScore is: \0m " << score << endl;
+            system("pause");
+        }
+        else if(choice ==2){
+            cout << "\033[91mExiting game....!\033[0m" << endl;
+            
+            return 0;
+        }
+    }
     return 0;
 }
