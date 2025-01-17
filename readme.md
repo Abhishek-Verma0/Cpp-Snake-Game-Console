@@ -155,3 +155,31 @@ ANSI escape codes are supported on many modern terminal emulators (including Lin
 - \033[48;5;6m = Cyan background
 - \033[48;5;7m = White background
 - \033[48;5;<number>m = 256-color background (where <number> can be between 0 and 255)
+
+
+
+## Text Color Setting Using ANSI codes
+
+    "\033[31mThis text is red\033[0m"
+
+1. `\033`: This starts the escape sequence.
+2. `[31m`: This sets the text color to red.
+3. `[0m:` This resets the color to default.
+
+
+- 90	Bright Black (Gray)
+- 91	Bright Red
+- 92	Bright Green
+- 93	Bright Yellow
+- 94	Bright Blue
+- 95	Bright Magenta
+- 96	Bright Cyan
+- 97	Bright White
+
+
+
+  ### Text  Formatting Codes
+- 0	Reset all styles
+- 1	Bold text
+- 4	Underlined text
+- 7	Reverse (invert colors)
