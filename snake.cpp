@@ -7,6 +7,27 @@ using namespace std;
 bool gameEnd = false;
 bool quit = false;
 
+
+
+// Function to control the visibility of the console cursor
+void ShowConsoleCursor(bool showFlag) {
+    // Get the handle to the standard output (console window)
+    HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    // Structure to hold the console cursor information
+    CONSOLE_CURSOR_INFO cursorInfo;
+
+    // Retrieve the current cursor information and store it in cursorInfo
+    GetConsoleCursorInfo(out, &cursorInfo);
+
+    // Set the visibility of the cursor based on the input parameter 'showFlag'
+    // If 'showFlag' is true, the cursor will be visible; if false, it will be hidden
+    cursorInfo.bVisible = showFlag;
+
+    // Apply the updated cursor visibility settings to the console
+    SetConsoleCursorInfo(out, &cursorInfo);
+}
+
 /********Starting Game Menu**********/
 string menuOpt[] = {"Start Game", "View Score", "Exit Game"};//options for menu
 const int menuSize = 3; // size of option menu array
@@ -262,8 +283,9 @@ void Logic() {
 
 // Main game loop
 int main() {
-
-while(true){
+    ShowConsoleCursor(false);
+    while (true)
+    {
         int choice= menuLogic();
         if(choice==0){
             COORD cursorPosition = {0, 0}; // {0, 0} represents the top-left corner of the console
