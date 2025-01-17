@@ -53,7 +53,7 @@ g++ snake.cpp -o snake.exe
 
 ## 🎯 Gameplay
 
-- Control the snake to eat fruits (`F`)
+- Control the snake to eat fruits (`o`)
 - Each fruit increases score by 5 points
 - Snake grows longer with each fruit eaten
 - Game ends if snake collides with its own tail
