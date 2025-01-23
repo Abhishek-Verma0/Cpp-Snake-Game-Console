@@ -42,14 +42,15 @@ g++ snake.cpp -o snake.exe
 ```bash
 ./snake.exe
 ```
-
+## 💻 Menu Navigation
+ - Use `Arrows(Up and Down)` To naviagte through menu and press Enter to select option.
 ## 🎮 Controls
 
 - `W` - Move Up
 - `S` - Move Down
 - `A` - Move Left
 - `D` - Move Right
-- `B` - Quit Game
+- `Q` - Quit Game
 
 ## 🎯 Gameplay
 
